@@ -1,6 +1,5 @@
 const express = require('express');
-const { MessagingApiClient } = require('@line/bot-sdk/messaging-api');
-const { middleware } = require('@line/bot-sdk');
+const { Client, middleware } = require('@line/bot-sdk');
 
 const app = express();
 
@@ -19,7 +18,7 @@ app.post('/webhook', middleware(config), (req, res) => {
 
 });
 
-const client = new MessagingApiClient(config);
+const client = new Client(config);
 
 function handleEvent(event) {
     if(event.type !== 'message' || event.message.type !== 'text') {
