@@ -8,16 +8,6 @@ const config = {
     channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 
-app.post('/webhook', middleware(config), (req, res) => {
-    Promise.all(req.body.events.map(handleEvent))
-        .then( result => res.json(result) )
-        .catch(err => {
-            console.error(err);
-            res.status(500).end();
-        });
-
-});
-
 const client = new Client(config);
 
 function handleEvent(event) {
@@ -31,7 +21,26 @@ function handleEvent(event) {
     });
 }
 
+// 伺服器啟動邏輯包裝成 function
+function startServer() {
+    app.post('/webhook', middleware(config), (req, res) => {
+        Promise.all(req.body.events.map(handleEvent))
+            .then( result => res.json(result) )
+            .catch(err => {
+                console.error(err);
+                res.status(500).end();
+            });
+    });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+    app.listen(3000, () => {
+        console.log('Server is running on port 3000');
+    });
+}
+
+// 判斷是否直接執行檔案
+if (require.main === module) {
+    startServer();
+}
+
+// 匯出
+module.exports = { handleEvent };
