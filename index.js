@@ -5,7 +5,7 @@ const app = express();
 
 const config = {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
-    channelSecret: process.env.Line_CHANNEL_SECRET,
+    channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 
 app.post('/webhook', middleware(config), (req, res) => {
